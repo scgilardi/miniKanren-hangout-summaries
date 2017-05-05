@@ -15,7 +15,6 @@
                           expected-val
                           v))))]))
 
-
 (define empty-env
   '(empty-env))
 
@@ -63,10 +62,10 @@
              `(closure ,x ,body ,env)]
             [(letrec ,bindings ,letrec-body)
              (guard (legal-letrec-bindings? bindings))
-             (let (prepare (lambda (binding)
-                             (pmatch binding
-                                     [(,f (lambda (,f-x) ,f-body))
-                                      `(,f . (half-closure ,f-x ,f-body))])))
+             (let ((prepare (lambda (binding)
+                              (pmatch binding
+                                      [(,f (lambda (,f-x) ,f-body))
+                                       `(,f . (half-closure ,f-x ,f-body))]))))
                (eval-expr letrec-body
                           `(letrec-env ,(map prepare bindings) ,env)))]
             [(,rator ,rand) ;application
